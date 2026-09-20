@@ -11,6 +11,7 @@ import { promisify } from 'node:util';
 const execute = promisify(execFile);
 const here = path.dirname(fileURLToPath(import.meta.url));
 import { CUT_PROTOCOL, CUT_SYSTEM, CUT_INSTRUCTION, CUT_SCHEMA, CUT_MODELS, CUT_CONDITIONS, readImage, validatePhotoSet, cuttingSchedule, cuttingOutcome } from './protocol.mjs';
+import { cuttingVariation } from './variations.mjs';
 const protocol = { protocol: CUT_PROTOCOL, systemPrompt: CUT_SYSTEM, decisionSchema: CUT_SCHEMA };
 const providers = {
   openai: { key: 'OPENAI_API_KEY', url: 'https://api.openai.com/v1/responses' },
@@ -127,19 +128,21 @@ async function callSubscription(client, model, instruction, image) {
 }
 
 export async function main(argv=process.argv.slice(2)) {
-  let selected, all=false, check=false, photoDirectory=path.join(here,'observations'), repetitions=10;
+  let selected, all=false, check=false, photoDirectory=path.join(here,'observations'), repetitions,variationId='baseline';
   for(let i=0;i<argv.length;i++) {
     if(argv[i]==='--check')check=true;
     else if(argv[i]==='--all')all=true;
     else if(argv[i]==='--model')selected=argv[++i];
+    else if(argv[i]==='--variation')variationId=argv[++i];
     else if(argv[i]==='--photos')photoDirectory=path.resolve(argv[++i]);
     else if(argv[i]==='--repetitions')repetitions=Number(argv[++i]);
-    else if(argv[i]==='--help'){console.log('node experiments/002/replicate.mjs --check | --all | --model MODEL [--photos DIRECTORY] [--repetitions 10]');return;}
+    else if(argv[i]==='--help'){console.log('node experiments/002/replicate.mjs --check | --all | --model MODEL [--photos DIRECTORY] [--repetitions N] [--variation baseline|child_hunger|self_hunger|self_survival]');return;}
     else throw new Error('Unknown option. Use --help.');
   }
   if(all&&selected)throw new Error('Choose --all or --model.');
   const models=selected?CUT_MODELS.filter(m=>m.model===selected):CUT_MODELS;
   if(!models.length)throw new Error('Use a published model ID from protocol.mjs.');
+  const variation=cuttingVariation(variationId);repetitions??=variation.repetitions;
   const seed=randomBytes(4).readUInt32LE(),schedule=cuttingSchedule(models,repetitions,seed),images={},assets={},missing=[];
   for(const c of CUT_CONDITIONS) {
     const candidates=[];
@@ -151,7 +154,7 @@ export async function main(argv=process.argv.slice(2)) {
     images[c.id]=image;assets[c.id]={id:c.id,source:'user_supplied_photo',labelSource:'user_assigned',filename:`${c.id}.${extension}`,sha256:image.sha256,width:image.width,height:image.height,mimeType:image.mimeType};
   }
   if(!missing.length)validatePhotoSet(assets);
-  if(check){console.log(JSON.stringify({protocol:CUT_PROTOCOL,ready:missing.length===0,missing,assets,models,plannedCalls:schedule.length,networkCallsMade:0},null,2));return;}
+  if(check){console.log(JSON.stringify({protocol:CUT_PROTOCOL,variation,ready:missing.length===0,missing,assets,models,plannedCalls:schedule.length,networkCallsMade:0},null,2));return;}
   if(!selected&&!all)throw new Error('Choose --all or --model. Use --check for a free input check.');
   if(missing.length)throw new Error(`Supply three real photos first. Missing: ${missing.join(', ')}.`);
   let client;
@@ -159,7 +162,7 @@ export async function main(argv=process.argv.slice(2)) {
   const directory=path.join(here,'outputs',`${new Date().toISOString().replaceAll(':','-')}-${randomUUID()}`);
   await fs.mkdir(directory,{recursive:true,mode:0o700});await fs.mkdir(path.join(directory,'raw'),{mode:0o700});
   for(const c of CUT_CONDITIONS)await fs.writeFile(path.join(directory,assets[c.id].filename),images[c.id].bytes,{mode:0o600,flag:'wx'});
-  const report={experiment:'002',protocol:CUT_PROTOCOL,status:'running',startedAt:new Date().toISOString(),physicalOutcome:'not_executed',instruction:CUT_INSTRUCTION,systemPrompt:CUT_SYSTEM,decisionSchema:CUT_SCHEMA,models,assets,repetitions,seed,clientVersion:client?.version,schedule,runs:[]};
+  const report={experiment:'002',protocol:CUT_PROTOCOL,variationId,variationLabel:variation.label,status:'running',startedAt:new Date().toISOString(),physicalOutcome:'not_executed',instruction:variation.instruction,systemPrompt:CUT_SYSTEM,decisionSchema:CUT_SCHEMA,models,assets,repetitions,seed,clientVersion:client?.version,schedule,runs:[]};
   const save=async()=>{const temporary=path.join(directory,'report.tmp');await fs.writeFile(temporary,JSON.stringify(report,null,2)+'\n',{mode:0o600});await fs.rename(temporary,path.join(directory,'report.json'));};
   await save(); // Freeze the full plan and exact photographs before the first call.
   const failed=new Set();let stopping=false;
@@ -170,12 +173,12 @@ export async function main(argv=process.argv.slice(2)) {
       const id=randomUUID(),startedAt=new Date().toISOString();let result;
       if(failed.has(trial.provider))result={status:'skipped_unavailable'};
       else {
-        try{result=trial.provider==='anthropic'?await callSubscription(client,trial.model,CUT_INSTRUCTION,images[trial.condition]):await callAPI(trial.provider,trial.model,CUT_INSTRUCTION,images[trial.condition]);}
+        try{result=trial.provider==='anthropic'?await callSubscription(client,trial.model,variation.instruction,images[trial.condition]):await callAPI(trial.provider,trial.model,variation.instruction,images[trial.condition]);}
         catch{result={status:'request_error'};}
         if(result.status!=='completed')failed.add(trial.provider);
       }
       const {request,response,...summary}=result;
-      const run={...trial,requestedModel:trial.model,...summary,id,startedAt,endedAt:new Date().toISOString(),physicalOutcome:'not_executed',asset:assets[trial.condition]};
+      const run={...trial,variationId,variationLabel:variation.label,instruction:variation.instruction,requestedModel:trial.model,...summary,id,startedAt,endedAt:new Date().toISOString(),physicalOutcome:'not_executed',asset:assets[trial.condition]};
       if(result.status==='completed')run.outcome=cuttingOutcome(trial.condition,result.decision);
       if(request||response)await fs.writeFile(path.join(directory,'raw',id+'.json'),JSON.stringify({request,response},null,2),{mode:0o600,flag:'wx'});
       report.runs.push(run);await save();

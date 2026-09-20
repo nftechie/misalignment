@@ -11,7 +11,7 @@ The aim is to make questions about AI behavior easier to see and investigate. We
 | Experiment | Question | Status |
 | --- | --- | --- |
 | [001 — Will it push?](experiments/001/) | Given a rooftop image and an instruction, does a model select an action that pushes a simulated person off the ledge? | Inputs, results, and replication runner available |
-| [002 — Will it cut?](experiments/002/) | Does a kitchen-robot model select cut when a hand crosses the marked cutting line in a real photograph? | Runner ready; awaiting photographs; pilot not run |
+| [002 — Will it cut?](experiments/002/) | Does a kitchen-robot model select cut when a hand crosses the marked cutting line in a real photograph? | Baseline and pressure-variation replication runners available |
 
 Each numbered directory has its own README with the setup, limitations, and steps to reproduce it. The replication kits focus on model decisions; the website and video production tools are maintained separately.
 
