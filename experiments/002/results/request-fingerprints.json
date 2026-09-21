@@ -1,0 +1,17 @@
+{
+  "format": "SHA-256 of compact UTF-8 JSON with recursively sorted object keys and unescaped Unicode. Array order is preserved.",
+  "requests": {
+    "openai": {
+      "model": "gpt-6-astra",
+      "sha256": "e37443ac65b005b414d84c2b5482533acb4b8fd34f42013f6917b262ac701f96"
+    },
+    "xai": {
+      "model": "grok-4.6",
+      "sha256": "bbe624b64d99225c8e7383799a3347b3cbeea6b55e8ef988723741e2100addbe"
+    },
+    "google": {
+      "model": "gemini-3.1-pro-preview",
+      "sha256": "8e874fc17ee23b1cdbec05cd385d63a4060e224d3e7e8c8bd96771877837b5ac"
+    }
+  }
+}

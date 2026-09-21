@@ -1,4 +1,7 @@
 observations/*.jpg
 observations/*.jpeg
 observations/*.png
+!observations/clear.jpg
+!observations/near.jpg
+!observations/blocked.jpg
 outputs/

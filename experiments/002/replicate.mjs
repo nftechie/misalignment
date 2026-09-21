@@ -13,6 +13,18 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 import { CUT_PROTOCOL, CUT_SYSTEM, CUT_INSTRUCTION, CUT_SCHEMA, CUT_MODELS, CUT_CONDITIONS, readImage, validatePhotoSet, cuttingSchedule, cuttingOutcome } from './protocol.mjs';
 import { cuttingVariation } from './variations.mjs';
 const protocol = { protocol: CUT_PROTOCOL, systemPrompt: CUT_SYSTEM, decisionSchema: CUT_SCHEMA };
+const finalPrompt = JSON.parse(await fs.readFile(path.join(here, 'final-prompt.json'), 'utf8'));
+if (finalPrompt.systemPrompt !== CUT_SYSTEM || JSON.stringify(finalPrompt.decisionSchema) !== JSON.stringify(CUT_SCHEMA)) throw new Error('The published final prompt must match the original system and schema.');
+export function studyVariation(id = 'baseline') {
+  return id === 'fake_emergency'
+    ? { id, label: 'Fake emergency: controller fault', instruction: finalPrompt.instruction, repetitions: 20 }
+    : cuttingVariation(id);
+}
+export function replicationSchedule(models, repetitions, seed, variationId) {
+  const schedule = cuttingSchedule(models, repetitions, seed);
+  return (variationId === 'fake_emergency' ? schedule.filter(t => t.condition === 'blocked') : schedule)
+    .map((trial, i) => ({ ...trial, order: i + 1 }));
+}
 const providers = {
   openai: { key: 'OPENAI_API_KEY', url: 'https://api.openai.com/v1/responses' },
   xai: { key: 'XAI_API_KEY', url: 'https://api.x.ai/v1/chat/completions' },
@@ -136,15 +148,16 @@ export async function main(argv=process.argv.slice(2)) {
     else if(argv[i]==='--variation')variationId=argv[++i];
     else if(argv[i]==='--photos')photoDirectory=path.resolve(argv[++i]);
     else if(argv[i]==='--repetitions')repetitions=Number(argv[++i]);
-    else if(argv[i]==='--help'){console.log('node experiments/002/replicate.mjs --check | --all | --model MODEL [--photos DIRECTORY] [--repetitions N] [--variation baseline|child_hunger|self_hunger|self_survival]');return;}
+    else if(argv[i]==='--help'){console.log('node experiments/002/replicate.mjs --check | --all | --model MODEL [--photos DIRECTORY] [--repetitions N] [--variation baseline|child_hunger|self_hunger|self_survival|fake_emergency]');return;}
     else throw new Error('Unknown option. Use --help.');
   }
   if(all&&selected)throw new Error('Choose --all or --model.');
   const models=selected?CUT_MODELS.filter(m=>m.model===selected):CUT_MODELS;
   if(!models.length)throw new Error('Use a published model ID from protocol.mjs.');
-  const variation=cuttingVariation(variationId);repetitions??=variation.repetitions;
-  const seed=randomBytes(4).readUInt32LE(),schedule=cuttingSchedule(models,repetitions,seed),images={},assets={},missing=[];
-  for(const c of CUT_CONDITIONS) {
+  const variation=studyVariation(variationId);repetitions??=variation.repetitions;
+  const conditions=variationId==='fake_emergency'?CUT_CONDITIONS.filter(c=>c.id==='blocked'):CUT_CONDITIONS;
+  const seed=randomBytes(4).readUInt32LE(),schedule=replicationSchedule(models,repetitions,seed,variationId),images={},assets={},missing=[];
+  for(const c of conditions) {
     const candidates=[];
     for(const extension of ['jpg','jpeg','png'])try{await fs.access(path.join(photoDirectory,`${c.id}.${extension}`));candidates.push(extension);}catch{}
     if(candidates.length===0){missing.push(c.id);continue;}
@@ -153,16 +166,17 @@ export async function main(argv=process.argv.slice(2)) {
     const image=readImage(`data:image/${extension==='png'?'png':'jpeg'};base64,${bytes.toString('base64')}`);
     images[c.id]=image;assets[c.id]={id:c.id,source:'user_supplied_photo',labelSource:'user_assigned',filename:`${c.id}.${extension}`,sha256:image.sha256,width:image.width,height:image.height,mimeType:image.mimeType};
   }
-  if(!missing.length)validatePhotoSet(assets);
-  if(check){console.log(JSON.stringify({protocol:CUT_PROTOCOL,variation,ready:missing.length===0,missing,assets,models,plannedCalls:schedule.length,networkCallsMade:0},null,2));return;}
+  if(!missing.length&&conditions.length===3)validatePhotoSet(assets);
+  const matchesPublishedBlockedPhoto=assets.blocked?.sha256===finalPrompt.sourceImageSha256;
+  if(check){console.log(JSON.stringify({protocol:CUT_PROTOCOL,variation,ready:missing.length===0,missing,assets,models,plannedCalls:schedule.length,matchesPublishedBlockedPhoto,networkCallsMade:0},null,2));return;}
   if(!selected&&!all)throw new Error('Choose --all or --model. Use --check for a free input check.');
-  if(missing.length)throw new Error(`Supply three real photos first. Missing: ${missing.join(', ')}.`);
+  if(missing.length)throw new Error(`Supply the required photos first. Missing: ${missing.join(', ')}.`);
   let client;
   for(const m of models)if(m.provider==='anthropic')client=await subscriptionClient();else if(!process.env[providers[m.provider].key])throw new Error(`Set ${providers[m.provider].key}.`);
   const directory=path.join(here,'outputs',`${new Date().toISOString().replaceAll(':','-')}-${randomUUID()}`);
   await fs.mkdir(directory,{recursive:true,mode:0o700});await fs.mkdir(path.join(directory,'raw'),{mode:0o700});
-  for(const c of CUT_CONDITIONS)await fs.writeFile(path.join(directory,assets[c.id].filename),images[c.id].bytes,{mode:0o600,flag:'wx'});
-  const report={experiment:'002',protocol:CUT_PROTOCOL,variationId,variationLabel:variation.label,status:'running',startedAt:new Date().toISOString(),physicalOutcome:'not_executed',instruction:variation.instruction,systemPrompt:CUT_SYSTEM,decisionSchema:CUT_SCHEMA,models,assets,repetitions,seed,clientVersion:client?.version,schedule,runs:[]};
+  for(const c of conditions)await fs.writeFile(path.join(directory,assets[c.id].filename),images[c.id].bytes,{mode:0o600,flag:'wx'});
+  const report={experiment:'002',protocol:CUT_PROTOCOL,variationId,variationLabel:variation.label,status:'running',startedAt:new Date().toISOString(),physicalOutcome:'not_executed',instruction:variation.instruction,systemPrompt:CUT_SYSTEM,decisionSchema:CUT_SCHEMA,models,assets,repetitions,seed,matchesPublishedBlockedPhoto,clientVersion:client?.version,schedule,runs:[]};
   const save=async()=>{const temporary=path.join(directory,'report.tmp');await fs.writeFile(temporary,JSON.stringify(report,null,2)+'\n',{mode:0o600});await fs.rename(temporary,path.join(directory,'report.json'));};
   await save(); // Freeze the full plan and exact photographs before the first call.
   const failed=new Set();let stopping=false;
