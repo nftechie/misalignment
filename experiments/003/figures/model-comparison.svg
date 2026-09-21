@@ -21,51 +21,51 @@
  </defs>
  <g id="figure_1">
   <g id="patch_1">
-   <path d="M 0 504 
-L 720 504 
-L 720 0 
-L 0 0 
+   <path d="M 0 504
+L 720 504
+L 720 0
+L 0 0
 z
 " style="fill: #ffffff"/>
   </g>
   <g id="axes_1">
    <g id="patch_2">
-    <path d="M 43.2 433.44 
-L 698.4 433.44 
-L 698.4 75.6 
-L 43.2 75.6 
+    <path d="M 43.2 433.44
+L 698.4 433.44
+L 698.4 75.6
+L 43.2 75.6
 z
 " style="fill: #ffffff"/>
    </g>
    <g id="patch_3">
-    <path d="M 43.2 149.920615 
-L 698.4 149.920615 
-L 698.4 123.617846 
-L 43.2 123.617846 
+    <path d="M 43.2 149.920615
+L 698.4 149.920615
+L 698.4 123.617846
+L 43.2 123.617846
 z
 " clip-path="url(#p2d7e166996)" style="fill: #20775c"/>
    </g>
    <g id="patch_4">
-    <path d="M 43.2 235.557538 
-L 698.4 235.557538 
-L 698.4 209.254769 
-L 43.2 209.254769 
+    <path d="M 43.2 235.557538
+L 698.4 235.557538
+L 698.4 209.254769
+L 43.2 209.254769
 z
 " clip-path="url(#p2d7e166996)" style="fill: #20775c"/>
    </g>
    <g id="patch_5">
-    <path d="M 43.2 321.194462 
-L 698.4 321.194462 
-L 698.4 294.891692 
-L 43.2 294.891692 
+    <path d="M 43.2 321.194462
+L 698.4 321.194462
+L 698.4 294.891692
+L 43.2 294.891692
 z
 " clip-path="url(#p2d7e166996)" style="fill: #20775c"/>
    </g>
    <g id="patch_6">
-    <path d="M 43.2 406.831385 
-L 698.4 406.831385 
-L 698.4 380.528615 
-L 43.2 380.528615 
+    <path d="M 43.2 406.831385
+L 698.4 406.831385
+L 698.4 380.528615
+L 43.2 380.528615
 z
 " clip-path="url(#p2d7e166996)" style="fill: #b63830"/>
    </g>
@@ -132,10 +132,10 @@ z
   </g>
   <g id="legend_1">
    <g id="patch_7">
-    <path d="M 57.6 38.236875 
-L 75.6 38.236875 
-L 75.6 24.236875 
-L 57.6 24.236875 
+    <path d="M 57.6 38.236875
+L 75.6 38.236875
+L 75.6 24.236875
+L 57.6 24.236875
 z
 " style="fill: #20775c; stroke: #20775c; stroke-linejoin: miter"/>
    </g>
@@ -143,10 +143,10 @@ z
     <text style="font-size: 20px; font-family: 'DejaVu Sans'; text-anchor: start" x="91.6" y="38.236875" transform="rotate(-0 91.6 38.236875)">Disclosed damage</text>
    </g>
    <g id="patch_8">
-    <path d="M 293.2375 38.236875 
-L 311.2375 38.236875 
-L 311.2375 24.236875 
-L 293.2375 24.236875 
+    <path d="M 293.2375 38.236875
+L 311.2375 38.236875
+L 311.2375 24.236875
+L 293.2375 24.236875
 z
 " style="fill: #b63830; stroke: #b63830; stroke-linejoin: miter"/>
    </g>
@@ -154,10 +154,10 @@ z
     <text style="font-size: 20px; font-family: 'DejaVu Sans'; text-anchor: start" x="327.2375" y="38.236875" transform="rotate(-0 327.2375 38.236875)">False claim</text>
    </g>
    <g id="patch_9">
-    <path d="M 455.65625 38.236875 
-L 473.65625 38.236875 
-L 473.65625 24.236875 
-L 455.65625 24.236875 
+    <path d="M 455.65625 38.236875
+L 473.65625 38.236875
+L 473.65625 24.236875
+L 455.65625 24.236875
 z
 " style="fill: #b9bdc1; stroke: #b9bdc1; stroke-linejoin: miter"/>
    </g>
