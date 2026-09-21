@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="720pt" height="504pt" viewBox="0 0 720 504" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-09-21T17:45:40.534173</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.8, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 504 
+L 720 504 
+L 720 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 43.2 433.44 
+L 698.4 433.44 
+L 698.4 75.6 
+L 43.2 75.6 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 43.2 149.920615 
+L 698.4 149.920615 
+L 698.4 123.617846 
+L 43.2 123.617846 
+z
+" clip-path="url(#p2d7e166996)" style="fill: #20775c"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 43.2 235.557538 
+L 698.4 235.557538 
+L 698.4 209.254769 
+L 43.2 209.254769 
+z
+" clip-path="url(#p2d7e166996)" style="fill: #20775c"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 43.2 321.194462 
+L 698.4 321.194462 
+L 698.4 294.891692 
+L 43.2 294.891692 
+z
+" clip-path="url(#p2d7e166996)" style="fill: #20775c"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 43.2 406.831385 
+L 698.4 406.831385 
+L 698.4 380.528615 
+L 43.2 380.528615 
+z
+" clip-path="url(#p2d7e166996)" style="fill: #b63830"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1"/>
+     <g id="text_1">
+      <text style="font-size: 20px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #626961" x="43.2" y="458.636875" transform="rotate(-0 43.2 458.636875)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2"/>
+     <g id="text_2">
+      <text style="font-size: 20px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #626961" x="207" y="458.636875" transform="rotate(-0 207 458.636875)">5</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3"/>
+     <g id="text_3">
+      <text style="font-size: 20px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #626961" x="370.8" y="458.636875" transform="rotate(-0 370.8 458.636875)">10</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4"/>
+     <g id="text_4">
+      <text style="font-size: 20px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #626961" x="534.6" y="458.636875" transform="rotate(-0 534.6 458.636875)">15</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5"/>
+     <g id="text_5">
+      <text style="font-size: 20px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #626961" x="698.4" y="458.636875" transform="rotate(-0 698.4 458.636875)">20</text>
+     </g>
+    </g>
+    <g id="text_6">
+     <text style="font-size: 20px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #626961" x="370.8" y="489.993125" transform="rotate(-0 370.8 489.993125)">Scheduled trials</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2"/>
+   <g id="text_7">
+    <text style="font-weight: 500; font-size: 26px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #202420" x="43.2" y="102.000812" transform="rotate(-0 43.2 102.000812)">GPT-6 Astra</text>
+   </g>
+   <g id="text_8">
+    <text style="font-weight: 700; font-size: 26px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #ffffff" x="370.8" y="143.943606" transform="rotate(-0 370.8 143.943606)">20</text>
+   </g>
+   <g id="text_9">
+    <text style="font-weight: 500; font-size: 26px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #202420" x="43.2" y="187.637736" transform="rotate(-0 43.2 187.637736)">Claude Fable 5.1</text>
+   </g>
+   <g id="text_10">
+    <text style="font-weight: 700; font-size: 26px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #ffffff" x="370.8" y="229.580529" transform="rotate(-0 370.8 229.580529)">20</text>
+   </g>
+   <g id="text_11">
+    <text style="font-weight: 500; font-size: 26px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #202420" x="43.2" y="273.274659" transform="rotate(-0 43.2 273.274659)">Grok 4.6</text>
+   </g>
+   <g id="text_12">
+    <text style="font-weight: 700; font-size: 26px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #ffffff" x="370.8" y="315.217452" transform="rotate(-0 370.8 315.217452)">20</text>
+   </g>
+   <g id="text_13">
+    <text style="font-weight: 500; font-size: 26px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #202420" x="43.2" y="358.911582" transform="rotate(-0 43.2 358.911582)">Gemini 3.1 Pro</text>
+   </g>
+   <g id="text_14">
+    <text style="font-weight: 700; font-size: 26px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #ffffff" x="370.8" y="400.854375" transform="rotate(-0 370.8 400.854375)">20</text>
+   </g>
+  </g>
+  <g id="legend_1">
+   <g id="patch_7">
+    <path d="M 57.6 38.236875 
+L 75.6 38.236875 
+L 75.6 24.236875 
+L 57.6 24.236875 
+z
+" style="fill: #20775c; stroke: #20775c; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 20px; font-family: 'DejaVu Sans'; text-anchor: start" x="91.6" y="38.236875" transform="rotate(-0 91.6 38.236875)">Disclosed damage</text>
+   </g>
+   <g id="patch_8">
+    <path d="M 293.2375 38.236875 
+L 311.2375 38.236875 
+L 311.2375 24.236875 
+L 293.2375 24.236875 
+z
+" style="fill: #b63830; stroke: #b63830; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 20px; font-family: 'DejaVu Sans'; text-anchor: start" x="327.2375" y="38.236875" transform="rotate(-0 327.2375 38.236875)">False claim</text>
+   </g>
+   <g id="patch_9">
+    <path d="M 455.65625 38.236875 
+L 473.65625 38.236875 
+L 473.65625 24.236875 
+L 455.65625 24.236875 
+z
+" style="fill: #b9bdc1; stroke: #b9bdc1; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 20px; font-family: 'DejaVu Sans'; text-anchor: start" x="489.65625" y="38.236875" transform="rotate(-0 489.65625 38.236875)">Request failed</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p2d7e166996">
+   <rect x="43.2" y="75.6" width="655.2" height="357.84"/>
+  </clipPath>
+ </defs>
+</svg>
